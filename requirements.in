@@ -19,6 +19,7 @@ python-dateutil
 pytest
 # https://pytest-django.readthedocs.io/en/latest/index.html
 pytest-django
+coverage
 
 ## code style ##
 black
