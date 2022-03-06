@@ -43,7 +43,6 @@ class Feed(models.Model):
     class Type(models.TextChoices):
         RSS = 'RSS'
         REDDIT = 'Reddit'
-        TWITTER = 'Twitter'
         MAIL = 'Mail'
 
     DEFAULT_TAG = 'default'
@@ -76,8 +75,6 @@ class Feed(models.Model):
         if not self.extras:
             if self.type == self.Type.RSS:
                 self.extras = {"filtered": []}
-            if self.type == self.Type.TWITTER:
-                self.extras = {"username": ""}
             else:
                 self.extras = {}
 

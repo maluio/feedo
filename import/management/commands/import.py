@@ -5,7 +5,6 @@ from django.core.management.base import BaseCommand
 
 from ._reddit import do_import as do_reddit_import
 from ._rss import do_import as do_rss_import
-from ._twitter import do_import as do_twitter_import
 from ._mail import do_import as do_mail_import
 from ._cleanup import do_cleanup
 import logging
@@ -25,11 +24,6 @@ class Command(BaseCommand):
             do_rss_import()
         except Exception as e:
             logger.error(f'Error when trying to do rss import : {e}')
-
-        try:
-            do_twitter_import()
-        except Exception as e:
-            logger.error(f'Error when trying to do twitter import : {e}')
 
         # try:
         #    do_mail_import()
