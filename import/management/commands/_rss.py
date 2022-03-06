@@ -42,9 +42,10 @@ def can_import(feed: Feed, item) -> bool:
     if len(Article.objects.filter(link=item['link'])) > 0:
         return False
 
-    for word in feed.extras['filtered']:
-        if word in item['title'].lower():
-            return False
+    if 'filtered' in feed.extras:
+        for word in feed.extras['filtered']:
+            if word.lower() in item['title'].lower():
+                return False
 
     return True
 
@@ -56,5 +57,5 @@ def parse_date(value):
         if not parsed.tzinfo:
             parsed = make_aware(parsed)
         return parsed
-    except:
+    except Exception as e:
         return None
