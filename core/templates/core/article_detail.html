@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <script>
+        function articleRead() {
+            return {
+                visible: true,
+                read() {
+                    fetch('{% url 'core:article_read' article.id %}').then(() => {
+                        this.visible = false
+                        window.location.assign("{% url 'core:forward_to_next_feed' %}")
+                    })
+                }
+            }
+        }
+
+        function articleSave() {
+            return {
+                visible: true,
+                save() {
+                    fetch('{% url 'core:article_save' article.id %}').then(() => {
+                        this.visible = false
+                        window.location.assign("{% url 'core:article_saved' %}")
+                    })
+                }
+            }
+        }
+    </script>
+    <section class="section">
+        <div class="container">
+            <h2 class="title">{{ article.title | safe }}</h2>
+            <p>
+                <strong>{{ feed.title }}</strong>&nbsp;&nbsp;
+                <i>{{ article.published_at }}</i>
+            </p>
+            &nbsp;
+            <p>
+                {{ article.description|safe }}
+            </p>
+            <p style="margin-bottom: 50px;">
+                {{ article.content|safe }}
+            </p>
+        </div>
+    </section>
+    <nav class="navbar is-fixed-bottom">
+        <hr/>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td style="width: 75%"></td>
+                <td>
+                    <a class="button is-info is-primary" href="{{ article.link }}" target="_blank">Link</a>
+                </td>
+                {% if article.unread %}
+                    <td>
+                        <button x-show="visible" class="button" x-data="articleRead()" @click="read()">Mark
+                            Read
+                        </button>
+                    </td>
+                {% endif %}k
+                <td>
+                    {% if not article.saved %}
+                        <button x-show="visible" class="button" x-data="articleSave()" @click="save()">
+                            Save
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <hr/>
+    </nav>
+{% endblock %}

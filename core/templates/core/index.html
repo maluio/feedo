@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div>
+        <table class="table">
+            <tbody>
+            {% for feed in unreadByFeed %}
+                <tr>
+                    <td><a href="{% url 'core:feed_articles' feed.id %}">{{ feed.title }}</a> ({{ feed.unread_count }})
+                    </td>
+                    <td>
+                        {% for tag in feed.tags.all %}
+                            <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </td>
+                    <td><span class="tag is-normal"> {{ feed.type }}</span></td>
+                    <td><a class="button is-info is-primary" href="{% url 'core:feed_articles' feed.id %}">List</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            {% for tag in tags %}
+                {% if tag.unread_article_count > 0 %}
+                    <div style="margin-bottom: 5px">
+                        <a href="{% url 'core:index' %}?tag={{ tag.name }}">
+                        <span class="tags has-addons">
+                            <span class="tag {% if tag.name == activeTag %}is-primary{% else %}{% endif %}">{{ tag.name }}</span>
+                            <span class="tag {% if tag.name == activeTag %}is-primary{% else %}{% endif %}">{{ tag.unread_article_count }}</span>
+                        </span>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

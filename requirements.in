@@ -1,0 +1,33 @@
+# https://pypi.org/project/pip-tools/
+# $ pip-compile --generate-hashes --allow-unsafe requirements.in
+# $ pip-sync
+
+## dependency management ##
+pip-tools
+
+## django ##
+django==3.1
+
+## the "classics" ##
+python-dotenv
+requests
+beautifulsoup4
+pydantic
+python-dateutil
+
+## testing ##
+pytest
+# https://pytest-django.readthedocs.io/en/latest/index.html
+pytest-django
+
+## code style ##
+black
+isort
+
+## apps ##
+# reddit client
+praw
+# rss feed parser
+feedparser
+# email
+imap_tools

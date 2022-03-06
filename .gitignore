@@ -1,0 +1,6 @@
+db/
+!db/.gitkeep
+venv
+.env
+static/
+!core/static

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Feedo</title>
+    <link rel="stylesheet" href="{% static 'core/css/bulma.min.css' %}"/>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <style>
+        li {
+            padding: 15px 0;
+        }
+
+        p {
+            padding: 10px 0;
+        }
+
+        body hr {
+            display: block;
+            height: 5px;
+            border: 0;
+            border-top: 1px solid #000000;
+            margin: 1em 0;
+            padding: 0;
+        }
+    </style>
+
+    <!-- https://favicon.io/favicon-generator/ -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'core/images/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/images/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/images/favicons/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'core/images/favicons/favicon.ico' %}"/>
+</head>
+
+<body class="has-navbar-fixed-bottom">
+<div class="columns">
+    <div class="column is-three-fifths is-offset-one-fifth">
+        {% include 'core/navbar.html' %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <table class="table">
+        {% for article in object_list %}
+            <tr>
+                <td>{{ article.feed }}</td>
+                <td>{{ article.created_at }}</td>
+                <td><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></td>
+                <td><a href="{% url 'admin:core_article_change' article.id %}">edit</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

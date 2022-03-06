@@ -1,0 +1,25 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{% url 'core:index' %}">
+                Home
+            </a>
+            <a class="navbar-item" href="{% url 'core:article_saved' %}">
+                Saved
+            </a>
+
+            <div class="buttons">
+                <a class="button" href="{% url 'core:forward_to_next_feed' %}">Read ({{ unread_count }})</a>
+            </div>
+
+        </div>
+
+        <div class="navbar-end">
+            <a class="navbar-item" href="{% url 'admin:index' %}">
+                Admin
+            </a>
+        </div>
+    </div>
+</nav>
+<hr/>

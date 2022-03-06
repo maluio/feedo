@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <script>
+
+        window.addEventListener("beforeunload", () => {
+            let articleList = document.querySelector('.article-list')
+            articleList.style.visibility = "hidden";
+            if (window.scrollTo) window.scrollTo(0, 0);
+        })
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+        window.addEventListener("load", () => {
+            let articles = document.querySelectorAll(".article .read");
+            articles.forEach(a => createObserver(a))
+        }, false);
+
+        function createObserver(element) {
+            let observer;
+
+            let options = {
+                root: null,
+                rootMargin: "0px"
+            };
+
+            observer = new IntersectionObserver(handleIntersect, options);
+            observer.observe(element);
+        }
+
+        function handleIntersect(entries, observer) {
+            entries.forEach((entry) => {
+                if (entry.target.getBoundingClientRect().top < 0) {
+                    let id = entry.target.id
+                    document.querySelector(`#${id}`).click()
+                }
+            });
+        }
+
+        function readButton(){
+            return {
+                visible: true,
+                markRead(url){
+                    fetch(url).then(()=> this.visible = false )
+                }
+            }
+        }
+
+    </script>
+    <div class="article-list">
+        <h3 class="title">{{ feed.title }} <a
+                href="{% url 'admin:core_feed_change' feed.id %}">&nbsp;(edit)</a>
+        </h3>
+        <a class="button is-primary is-fullwidth"
+           href="{% url 'core:article_read_all' feed.id %}?last-created-at={{ last_created_at }}">>></a>
+        <table class="table">
+            <tbody>
+            {% for article in articles %}
+                <tr class="article">
+                    <td><a href="{% url 'core:article_detail' article.id %}"> {{ article.title | safe }}</a>
+                        <br>
+                        <br>
+                        <span style="color: gray">{{ article.description | striptags | truncatechars:200 }}</span>
+                    </td>
+                    <td><a class="button" href="{{ article.link }}" target="_blank">Link</a></td>
+                    <td x-data="readButton">
+                        <button x-show="visible" id="read-button-{{ article.id }}" class="button read"
+                                @click="markRead(`{% url 'core:article_read' article.id %}`)"
+                        >Mark read
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a class="button is-primary is-fullwidth"
+           href="{% url 'core:article_read_all' feed.id %}?last-created-at={{ last_created_at }}">>></a>
+        <div style="margin-top: 700px"></div>
+    </div>
+{% endblock %}
