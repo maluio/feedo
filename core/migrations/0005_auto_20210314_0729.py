@@ -6,35 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0004_remove_feed_rss_import'),
+        ("core", "0004_remove_feed_rss_import"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='article',
-            old_name='published',
-            new_name='published_at',
+            model_name="article",
+            old_name="published",
+            new_name="published_at",
         ),
         migrations.RenameField(
-            model_name='feed',
-            old_name='xml_url',
-            new_name='external_uid',
+            model_name="feed",
+            old_name="xml_url",
+            new_name="external_uid",
         ),
         migrations.RemoveField(
-            model_name='article',
-            name='guid',
+            model_name="article",
+            name="guid",
         ),
         migrations.RemoveField(
-            model_name='article',
-            name='updated',
+            model_name="article",
+            name="updated",
         ),
         migrations.RemoveField(
-            model_name='feed',
-            name='html_url',
+            model_name="feed",
+            name="html_url",
         ),
         migrations.AddField(
-            model_name='feed',
-            name='extras',
+            model_name="feed",
+            name="extras",
             field=models.JSONField(default=dict),
         ),
     ]

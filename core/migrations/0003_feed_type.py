@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_auto_20210304_2058'),
+        ("core", "0002_auto_20210304_2058"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='feed',
-            name='type',
-            field=models.CharField(choices=[('RSS', 'Rss'), ('Reddit', 'Reddit'), ('Twitter', 'Twitter')], default='RSS', max_length=10),
+            model_name="feed",
+            name="type",
+            field=models.CharField(
+                choices=[("RSS", "Rss"), ("Reddit", "Reddit"), ("Twitter", "Twitter")],
+                default="RSS",
+                max_length=10,
+            ),
         ),
     ]

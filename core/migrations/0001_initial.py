@@ -9,43 +9,66 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Feed',
+            name="Feed",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated_at', models.DateTimeField(blank=True, null=True)),
-                ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('title', models.TextField()),
-                ('xml_url', models.TextField(unique=True)),
-                ('html_url', models.TextField()),
-                ('filter', models.TextField(null=True)),
-                ('rss_import', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("updated_at", models.DateTimeField(blank=True, null=True)),
+                ("deleted_at", models.DateTimeField(blank=True, null=True)),
+                ("title", models.TextField()),
+                ("xml_url", models.TextField(unique=True)),
+                ("html_url", models.TextField()),
+                ("filter", models.TextField(null=True)),
+                ("rss_import", models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
-            name='Article',
+            name="Article",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated_at', models.DateTimeField(blank=True, null=True)),
-                ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('title', models.CharField(blank=True, max_length=1000, null=True)),
-                ('description', models.CharField(blank=True, max_length=10000, null=True)),
-                ('content', models.CharField(blank=True, max_length=10000, null=True)),
-                ('link', models.TextField(unique=True)),
-                ('updated', models.DateTimeField(blank=True, null=True)),
-                ('published', models.DateTimeField(blank=True, null=True)),
-                ('guid', models.TextField(blank=True, null=True)),
-                ('image', models.TextField(blank=True, null=True)),
-                ('unread', models.BooleanField(default=True)),
-                ('postponed', models.BooleanField(default=False)),
-                ('archived', models.BooleanField(default=False)),
-                ('feed', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.feed')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("updated_at", models.DateTimeField(blank=True, null=True)),
+                ("deleted_at", models.DateTimeField(blank=True, null=True)),
+                ("title", models.CharField(blank=True, max_length=1000, null=True)),
+                (
+                    "description",
+                    models.CharField(blank=True, max_length=10000, null=True),
+                ),
+                ("content", models.CharField(blank=True, max_length=10000, null=True)),
+                ("link", models.TextField(unique=True)),
+                ("updated", models.DateTimeField(blank=True, null=True)),
+                ("published", models.DateTimeField(blank=True, null=True)),
+                ("guid", models.TextField(blank=True, null=True)),
+                ("image", models.TextField(blank=True, null=True)),
+                ("unread", models.BooleanField(default=True)),
+                ("postponed", models.BooleanField(default=False)),
+                ("archived", models.BooleanField(default=False)),
+                (
+                    "feed",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="core.feed"
+                    ),
+                ),
             ],
         ),
     ]

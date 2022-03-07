@@ -2,10 +2,14 @@ from unittest import mock
 
 
 def test_importer():
-    with mock.patch('importer.management.commands._reddit.do_import') as reddit_import:
-        with mock.patch('importer.management.commands._rss.do_import') as rss_import:
-            with mock.patch('importer.management.commands._cleanup.do_cleanup') as cleanup:
-                with mock.patch('importer.management.commands.importer.logger') as logger:
+    with mock.patch("importer.management.commands._reddit.do_import") as reddit_import:
+        with mock.patch("importer.management.commands._rss.do_import") as rss_import:
+            with mock.patch(
+                "importer.management.commands._cleanup.do_cleanup"
+            ) as cleanup:
+                with mock.patch(
+                    "importer.management.commands.importer.logger"
+                ) as logger:
                     from importer.management.commands.importer import Command
 
                     cmd = Command()
@@ -24,8 +28,12 @@ def test_importer():
                     cmd = Command()
                     cmd.handle()
 
-                    logger.error.assert_has_calls([
-                        mock.call('Error when trying to do reddit import : reddit error'),
-                        mock.call('Error when trying to do rss import : rss error'),
-                        mock.call('Error when doing clean up : cleanup error'),
-                    ])
+                    logger.error.assert_has_calls(
+                        [
+                            mock.call(
+                                "Error when trying to do reddit import : reddit error"
+                            ),
+                            mock.call("Error when trying to do rss import : rss error"),
+                            mock.call("Error when doing clean up : cleanup error"),
+                        ]
+                    )

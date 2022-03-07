@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_feed_type'),
+        ("core", "0003_feed_type"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='feed',
-            name='rss_import',
+            model_name="feed",
+            name="rss_import",
         ),
     ]

@@ -7,27 +7,27 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-imap_host = os.getenv('IMAP_HOST')
-imap_user = os.getenv('IMAP_USER')
-imap_pass = os.getenv('IMAP_PASSWORD')
+imap_host = os.getenv("IMAP_HOST")
+imap_user = os.getenv("IMAP_USER")
+imap_pass = os.getenv("IMAP_PASSWORD")
 
 
 def do_import():
-    logger.info('Starting mail import')
+    logger.info("Starting mail import")
     # https://github.com/ikvk/imap_tools
     with MailBox(imap_host).login(imap_user, imap_pass) as mailbox:
         for msg in mailbox.fetch():
             feed_id = f"mail_{imap_user}_{msg.from_}"
-            logger.info(f'Importing {feed_id}')
+            logger.info(f"Importing {feed_id}")
             # feed already in DB ?
             if len(Feed.objects.filter(external_uid=feed_id)) == 0:
                 feed = Feed()
-                feed.title = msg.from_values.get('name')
+                feed.title = msg.from_values.get("name")
                 feed.external_uid = feed_id
                 feed.type = Feed.Type.MAIL
                 feed.save()
             else:
-                feed = Feed.objects.filter(external_uid=feed_id)[0]
+                feed = Feed.objects_active.filter(external_uid=feed_id).first()
 
             article_key = f"mail_article_{imap_user}_{msg.uid}"
 
@@ -36,8 +36,10 @@ def do_import():
             # delete mail
             mailbox.delete([msg.uid])
 
-            if not feed.active:
-                logger.info(f'Mail feed {feed.title} not active. Aborting article import')
+            if not feed:
+                logger.info(
+                    f"Mail feed {feed.title} not active. Aborting article import"
+                )
                 continue
 
             # article already in DB ?

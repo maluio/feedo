@@ -6,17 +6,15 @@ from core.models import Feed
 
 
 def update_extras(apps, schema_editor):
-    fd = apps.get_model('core', 'Feed')
+    fd = apps.get_model("core", "Feed")
     for f in fd.objects.filter(type=Feed.Type.RSS):
-        f.extras['filter'] = []
+        f.extras["filter"] = []
         f.save()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('core', '0005_auto_20210314_0729'),
+        ("core", "0005_auto_20210314_0729"),
     ]
 
-    operations = [
-        migrations.RunPython(update_extras)
-    ]
+    operations = [migrations.RunPython(update_extras)]

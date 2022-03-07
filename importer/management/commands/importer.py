@@ -13,17 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         try:
             do_reddit_import()
         except Exception as e:
-            logger.error(f'Error when trying to do reddit import : {e}')
+            logger.error(f"Error when trying to do reddit import : {e}")
 
         try:
             do_rss_import()
         except Exception as e:
-            logger.error(f'Error when trying to do rss import : {e}')
+            logger.error(f"Error when trying to do rss import : {e}")
 
         # try:
         #    do_mail_import()

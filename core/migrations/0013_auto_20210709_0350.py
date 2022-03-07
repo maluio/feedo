@@ -6,21 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0012_auto_20210703_0922'),
+        ("core", "0012_auto_20210703_0922"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='article',
-            options={'ordering': ['-updated_at']},
+            name="article",
+            options={"ordering": ["-updated_at"]},
         ),
         migrations.AlterModelOptions(
-            name='tag',
-            options={'ordering': ['-position']},
+            name="tag",
+            options={"ordering": ["-position"]},
         ),
         migrations.AlterField(
-            model_name='tag',
-            name='position',
+            model_name="tag",
+            name="position",
             field=models.IntegerField(default=-1),
         ),
     ]

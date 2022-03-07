@@ -58,7 +58,9 @@ atom_feed = """
         </content>
     </entry>
 </feed>
-""".strip('\n').strip()
+""".strip(
+    "\n"
+).strip()
 
 rss_feed = """
 <?xml version="1.0" encoding="utf-8"?>
@@ -82,7 +84,9 @@ rss_feed = """
         </item>
     </channel>
 </rss>
-""".strip('\n').strip()
+""".strip(
+    "\n"
+).strip()
 
 
 @pytest.mark.django_db
@@ -95,7 +99,7 @@ def test_import_atom(make_feed):
     articles = Article.objects.all()
     assert len(articles) == 1
 
-    assert articles[0].title == 'First atom entry title'
+    assert articles[0].title == "First atom entry title"
 
 
 @pytest.mark.django_db
@@ -108,8 +112,10 @@ def test_import_rss(make_feed):
     articles = Article.objects.all()
     assert len(articles) == 1
 
-    assert articles[0].title == 'First rss entry title'
-    assert articles[0].published_at == datetime.datetime(2002, 9, 5, 0, 0, 1, tzinfo=datetime.timezone.utc)
+    assert articles[0].title == "First rss entry title"
+    assert articles[0].published_at == datetime.datetime(
+        2002, 9, 5, 0, 0, 1, tzinfo=datetime.timezone.utc
+    )
 
 
 @pytest.mark.django_db
@@ -130,9 +136,7 @@ def test_import_only_once(make_feed):
 @pytest.mark.django_db
 def test_import_ignore_filtered(make_feed):
     feed = make_feed()
-    feed.extras = {
-        "filtered": ["first"]
-    }
+    feed.extras = {"filtered": ["first"]}
     feed.external_uid = rss_feed
     feed.save()
 
@@ -143,9 +147,7 @@ def test_import_ignore_filtered(make_feed):
     Feed.objects.all().delete()
 
     feed = make_feed()
-    feed.extras = {
-        "filtered": ["not_in_title"]
-    }
+    feed.extras = {"filtered": ["not_in_title"]}
     feed.external_uid = rss_feed
     feed.save()
 
@@ -169,7 +171,7 @@ def test_import_ignore_inactive_feeds(make_feed):
 @pytest.mark.django_db
 def test_import_continue_after_error(make_feed):
     feed = make_feed()
-    feed.external_uid = 'i am not a feed'
+    feed.external_uid = "i am not a feed"
     feed.save()
 
     feed2 = make_feed()

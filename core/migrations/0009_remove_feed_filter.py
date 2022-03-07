@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0008_merge_20210314_0749'),
+        ("core", "0008_merge_20210314_0749"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='feed',
-            name='filter',
+            model_name="feed",
+            name="filter",
         ),
     ]

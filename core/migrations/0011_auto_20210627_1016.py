@@ -7,26 +7,34 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0010_auto_20210627_0630'),
+        ("core", "0010_auto_20210627_0630"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Tag',
+            name="Tag",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.AlterField(
-            model_name='feed',
-            name='extras',
+            model_name="feed",
+            name="extras",
             field=models.JSONField(blank=True, default=dict),
         ),
         migrations.AddField(
-            model_name='feed',
-            name='tags',
-            field=models.ManyToManyField(to='core.Tag'),
+            model_name="feed",
+            name="tags",
+            field=models.ManyToManyField(to="core.Tag"),
         ),
     ]

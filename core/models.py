@@ -8,7 +8,7 @@ def get_now():
 
 class Tag(models.Model):
     class Meta:
-        ordering = ['-position']
+        ordering = ["-position"]
 
     created_at = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=100)
@@ -45,22 +45,18 @@ class ActiveFeedManager(models.Manager):
 
 class Feed(models.Model):
     class Type(models.TextChoices):
-        RSS = 'RSS'
-        REDDIT = 'Reddit'
-        MAIL = 'Mail'
+        RSS = "RSS"
+        REDDIT = "Reddit"
+        MAIL = "Mail"
 
-    DEFAULT_TAG = 'default'
+    DEFAULT_TAG = "default"
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
     title = models.TextField()
     external_uid = models.TextField(unique=True)
-    type = models.CharField(
-        max_length=10,
-        choices=Type.choices,
-        default=Type.RSS
-    )
+    type = models.CharField(max_length=10, choices=Type.choices, default=Type.RSS)
     extras = models.JSONField(default=dict, blank=True)
     active = models.BooleanField(default=True)
     tags = models.ManyToManyField(to=Tag)
@@ -104,7 +100,7 @@ class Article(models.Model):
     saved = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-updated_at']
+        ordering = ["-updated_at"]
 
     def __str__(self):
         return self.title
