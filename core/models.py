@@ -2,6 +2,10 @@ from django.db import models
 from django.utils import timezone
 
 
+def get_now():
+    timezone.now()
+
+
 class Tag(models.Model):
     class Meta:
         ordering = ['-position']
@@ -107,7 +111,7 @@ class Article(models.Model):
 
     # override model save method
     def save(self, *args, **kwargs):
-        self.updated_at = timezone.now()
+        self.updated_at = get_now()
         super().save(*args, **kwargs)
 
     def mark_read(self):
