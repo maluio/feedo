@@ -3,7 +3,7 @@ from datetime import tzinfo
 from unittest import mock
 
 from core.models import Article, Feed
-from ._rss import do_import as do_rss_import
+from importer.management.commands._rss import do_import as do_rss_import
 
 import pytest
 
