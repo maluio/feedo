@@ -98,7 +98,7 @@ def article_read_all(request, feed_id):
     articles = Article.objects.filter(feed__id=feed_id, unread=True)
     if request.GET.get("last-created-at"):
         last_created = parser.parse(request.GET.get("last-created-at"))
-        articles.filter(created_at__lt=last_created)
+        articles = articles.filter(created_at__lte=last_created)
     for article in articles:
         article.mark_read()
         article.save()

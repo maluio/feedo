@@ -1,5 +1,7 @@
+import datetime
+from unittest import mock
+
 import pytest
-from urllib.parse import quote
 
 
 @pytest.mark.django_db
@@ -53,18 +55,20 @@ def test_unread_article_count(client, make_article, make_feed, make_tag):
 
 @pytest.mark.django_db
 def test_articles_by_feed(client, make_feed, make_article):
-    feed1 = make_feed()
-    r = client.get(f"/feeds/{feed1.id}/articles/", follow=False)
-    assert r.status_code == 302
-    assert r.url == "/"
+    with mock.patch("django.utils.timezone.now") as now:
+        now.return_value = datetime.datetime(2000, 5, 10)
 
-    article1 = make_article(feed=feed1)
+        feed1 = make_feed()
+        r = client.get(f"/feeds/{feed1.id}/articles/", follow=False)
+        assert r.status_code == 302
+        assert r.url == "/"
 
-    r = client.get(f"/feeds/{feed1.id}/articles/", follow=False)
-    assert r.status_code == 200
-    assert len(r.context["articles"]) == 1
-    # @todo : hard code expected date
-    assert r.context["last_created_at"] == quote(article1.created_at.isoformat())
+        make_article(feed=feed1)
+
+        r = client.get(f"/feeds/{feed1.id}/articles/", follow=False)
+        assert r.status_code == 200
+        assert len(r.context["articles"]) == 1
+        assert r.context["last_created_at"] == '2000-05-10T00%3A00%3A00%2B00%3A00'
 
 
 @pytest.mark.django_db
@@ -105,13 +109,39 @@ def test_article_read_all(client, make_feed, make_article):
     feeds = response.context["unreadByFeed"]
     assert feeds[0].unread_count() == 2
 
-    client.get("/articles/1/read-all")
+    client.get("/feeds/1/read-all")
     response = client.get("/")
     feeds = response.context["unreadByFeed"]
 
     assert len(feeds) == 0
 
-    # @todo: test last-created-at
+
+@pytest.mark.django_db
+def test_article_read_all_with_create_at(client, make_feed, make_article):
+    with mock.patch("django.utils.timezone.now") as now:
+        now.return_value = datetime.datetime(2000, 5, 10)
+        feed = make_feed()
+        make_article(title="article1", feed=feed)
+
+        response = client.get("/")
+        articles = response.context["unreadByFeed"]
+        assert articles[0].unread_count() == 1
+
+        last_created_at = datetime.datetime(2000, 5, 9).isoformat()
+        client.get(f"/feeds/1/read-all?last-created-at={last_created_at}")
+
+        response = client.get("/")
+        articles = response.context["unreadByFeed"]
+
+        assert len(articles) == 1
+
+        last_created_at = datetime.datetime(2000, 5, 10).isoformat()
+        client.get(f"/feeds/1/read-all?last-created-at={last_created_at}")
+
+        response = client.get("/")
+        articles = response.context["unreadByFeed"]
+
+        assert len(articles) == 0
 
 
 @pytest.mark.django_db

@@ -3,14 +3,14 @@ from django.utils import timezone
 
 
 def get_now():
-    timezone.now()
+    return timezone.now()
 
 
 class Tag(models.Model):
     class Meta:
         ordering = ["-position"]
 
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=get_now)
     name = models.CharField(max_length=100)
     position = models.IntegerField(default=-1)
 
@@ -51,7 +51,7 @@ class Feed(models.Model):
 
     DEFAULT_TAG = "default"
 
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=get_now)
     updated_at = models.DateTimeField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
     title = models.TextField()
@@ -86,7 +86,7 @@ class Feed(models.Model):
 
 
 class Article(models.Model):
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=get_now)
     updated_at = models.DateTimeField(blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
     published_at = models.DateTimeField(blank=True, null=True)
