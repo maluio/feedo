@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.utils.timezone import make_aware
 
-import praw
+from praw import Reddit
 import os
 
 from core.models import Feed, Article
@@ -10,15 +10,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _get_reddit_client():
+    user_agent = "testscript by /u/{}".format(os.getenv('REDDIT_USERNAME'))
+    return Reddit(client_id=os.getenv('REDDIT_CLIENT_ID'),
+                  client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
+                  password=os.getenv('REDDIT_PASSWORD'),
+                  user_agent=user_agent,
+                  username=os.getenv('REDDIT_USERNAME')
+                  )
+
+
 def do_import():
     logger.info('Starting reddit import')
-    user_agent = "testscript by /u/{}".format(os.getenv('REDDIT_USERNAME'))
-    reddit = praw.Reddit(client_id=os.getenv('REDDIT_CLIENT_ID'),
-                         client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
-                         password=os.getenv('REDDIT_PASSWORD'),
-                         user_agent=user_agent,
-                         username=os.getenv('REDDIT_USERNAME')
-                         )
+    reddit = _get_reddit_client()
     for sr in reddit.user.subreddits():
         sr_title = "{}".format(sr)
         logger.info(f'Importing subreddit {sr_title}')
@@ -29,8 +33,8 @@ def do_import():
             feed.type = Feed.Type.REDDIT
             feed.save()
         else:
-            feed = Feed.objects.filter(title=sr_title)[0]
-        if not feed.active:
+            feed = Feed.objects_active.filter(title=sr_title).first()
+        if not feed:
             logger.info(f'Subreddit {sr_title} not active. Aborting article import')
             continue
         for submission in sr.top(time_filter='day', limit=15):
