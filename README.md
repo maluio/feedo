@@ -1,8 +1,6 @@
 # Feedo - Personal Feed Reader
 
-A non-fancy personal feed reader.
-
-![architecture](./docs/screenshot.png)
+A self-hosted, non-fancy, personal feed reader.
 
 ## Supported Feed Sources
 
@@ -10,19 +8,29 @@ A non-fancy personal feed reader.
 * Reddit (using [PRAW](https://praw.readthedocs.io/en/stable/index.html))
 * e-mail
 
+## Screenshots
+
+![screenshot](./docs/screenshot.png)
+
+![screenshot](./docs/screenshot2.png)
+
 ## Requirements
 
 * **python3** + **pip3**
-  * **sqlite3**
+* **sqlite3**
 * A **Reddit account** with subscriptions of the subreddits you'd like to fetch
 
-## Recommended Architecture
+## Architecture
 
 Feedo doesn't require a specific architecture. Any environment that runs a webserver + python3 code should be fine. However, this is one possible way to run it:
 
 ![architecture](./docs/feedo-architecture.png)
 
-## Installation for Development
+## Production (recommended)
+
+* A docker file for Python + uWSGI like [this one](https://github.com/caktus/dockerfile_post/blob/master/Dockerfile)
+
+## Development
 
 Create a `.env` file in the document root with:
 

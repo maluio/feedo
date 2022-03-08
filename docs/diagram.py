@@ -15,11 +15,12 @@ graph_attr = {
 with Diagram("Feedo - Recommended Architecture", filename="docs/feedo-architecture", graph_attr=graph_attr):
     with Cluster("On Prem"):
         web = Traefik()
-        docker = Docker()
 
-        with Cluster("App"):
-            app = Django()
-            db = SQL("SQLite")
+        with Cluster("Container"):
+            docker = Docker()
+            with Cluster("App"):
+                app = Django()
+                db = SQL("SQLite")
     with Cluster("AWS"):
         litestream = Edge(label="litestream")
         s3 = S3("S3 DB backup")
