@@ -1,6 +1,16 @@
 # Feedo - Personal Feed Reader
 
-A self-hosted, non-fancy, personal feed reader.
+**A self-hosted, non-fancy, personal feed reader.**
+
+## Goals
+
+* Easy + cheap to self-host
+  * low JS (no JS build steps required!)
+  * no need for a "big" DB server; uses **SQlite** + [Litestream](https://litestream.io)
+* No built-in access control
+  * support for only one user
+  * no access control built-in (except for Django Admin)
+  * **access control must happen on another architecture level**; it is not part of Feedo, but there are recommandations (see section **Architecture**)  
 
 ## Supported Feed Sources
 
@@ -8,9 +18,19 @@ A self-hosted, non-fancy, personal feed reader.
 * Reddit (using [PRAW](https://praw.readthedocs.io/en/stable/index.html))
 * e-mail
 
+## Features
+
+* Import articles from different sources
+* Tag your feeds
+* Save articles for later
+
 ## Screenshots
 
+### UI
+
 ![screenshot](./docs/screenshot.png)
+
+### Django Admin
 
 ![screenshot](./docs/screenshot2.png)
 
@@ -22,7 +42,9 @@ A self-hosted, non-fancy, personal feed reader.
 
 ## Architecture
 
-Feedo doesn't require a specific architecture. Any environment that runs a webserver + python3 code should be fine. However, this is one possible way to run it:
+Feedo doesn't require a specific architecture. Any environment that runs a webserver + python3 code that gets backupped regularly should be fine.
+
+However, this is one possible way to run it:
 
 ![architecture](./docs/feedo-architecture.png)
 
@@ -49,3 +71,10 @@ $ pip3 install -r requirements.txt
 $ ./manage.py runserver
 ```
 
+## Tests
+
+Run:
+
+```bash
+$ pytest
+```
