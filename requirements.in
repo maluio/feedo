@@ -21,6 +21,9 @@ pytest
 pytest-django
 coverage
 
+## documentation ##
+diagrams
+
 ## code style ##
 black
 isort
