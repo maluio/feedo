@@ -13,7 +13,7 @@ A non-fancy personal feed reader.
 ## Requirements
 
 * **python3** + **pip3**
-* **sqlite3**
+  * **sqlite3**
 * A **Reddit account** with subscriptions of the subreddits you'd like to fetch
 
 ## Recommended Architecture
