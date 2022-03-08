@@ -36,7 +36,7 @@
 
 ## Requirements
 
-* **python3** + **pip3**
+* **python3**
 * **sqlite3**
 * A **Reddit account** with subscriptions of the subreddits you'd like to fetch
 
@@ -44,7 +44,13 @@
 
 Feedo doesn't require a specific architecture. Any environment that runs a webserver + python3 code that gets backupped regularly should be fine.
 
-However, this is one possible way to run it:
+Here are some possible ways to run Feedo:
+
+### Simple
+
+![architecture](./docs/feedo-architecture-simple.png)
+
+### A bit more sophisticated
 
 ![architecture](./docs/feedo-architecture.png)
 

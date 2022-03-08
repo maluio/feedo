@@ -1,9 +1,8 @@
 # diagram.py
 from diagrams import Diagram, Edge, Cluster
 from diagrams.programming.framework import Django
-from diagrams.onprem.container import Docker
 from diagrams.aws.storage import S3
-from diagrams.onprem.network import Traefik, Gunicorn
+from diagrams.onprem.network import Traefik, Gunicorn, Caddy
 from diagrams.generic.database import SQL
 from diagrams.generic.device import Mobile
 
@@ -32,3 +31,18 @@ with Diagram("Feedo - Recommended Architecture", filename="docs/feedo-architectu
         s3 = S3("S3 DB backup")
 
     user >> web >> app_server >> app >> db >> litestream >> s3
+
+
+with Diagram("Feedo - Simple Architecture", filename="docs/feedo-architecture-simple", graph_attr=graph_attr):
+    with Cluster("Public Internet"):
+        user = Mobile("User")
+
+    with Cluster("On Prem"):
+        with Cluster("Routing + Access Control"):
+            web = Caddy("HTTP Basic Auth")
+
+        with Cluster("Feedo"):
+            app = Django("./manage.py runserver")
+            db = SQL("SQLite")
+
+    user >> web >> app >> db
