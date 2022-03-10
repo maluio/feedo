@@ -1,4 +1,4 @@
-[<img src="https://github.com/maluio/feedo-publish-test/actions/workflows/python.yaml/badge.svg">](https://github.com/maluio/feedo-publish-test/actions/workflows/tests.yaml)
+[<img src="https://github.com/maluio/feedo/actions/workflows/tests.yaml/badge.svg">](https://github.com/maluio/feedo/actions/workflows/tests.yaml)
 
 # Feedo - Personal Feed Reader
 
