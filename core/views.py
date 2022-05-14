@@ -57,7 +57,7 @@ def index(request):
 
 def feed_articles(request, feed_id):
     articles = Article.objects.filter(feed__id=feed_id, unread=True).order_by(
-        "-created_at"
+        "created_at"
     )
 
     if len(articles) == 0:
@@ -66,7 +66,7 @@ def feed_articles(request, feed_id):
     context = {
         "articles": articles,
         "feed": Feed.objects.get(pk=feed_id),
-        "last_created_at": quote(articles[0].created_at.isoformat()),
+        "last_created_at": quote(articles.last().created_at.isoformat()),
     }
 
     return render(request, "core/feed_articles.html", context)
