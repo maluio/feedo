@@ -5,6 +5,7 @@ from core.models import Feed, Article
 import feedparser
 
 import logging
+import warnings
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +60,10 @@ def can_import(feed: Feed, article: Article) -> bool:
 
 def parse_date(value):
     try:
-        parsed = parser.parse(value)
+        # To ignore warning of type: "UnknownTimezoneWarning: tzname EST identified but not understood."
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            parsed = parser.parse(value)
         # make timezone aware
         if not parsed.tzinfo:
             parsed = make_aware(parsed)
