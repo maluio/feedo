@@ -95,12 +95,16 @@ class Article(models.Model):
     description = models.CharField(max_length=10000, blank=True, null=True)
     content = models.CharField(max_length=10000, blank=True, null=True)
     link = models.TextField(unique=True)
+    guid = models.TextField(unique=True)
     image = models.TextField(blank=True, null=True)
     unread = models.BooleanField(default=True)
     saved = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-updated_at"]
+        constraints = [
+            models.UniqueConstraint(fields=['feed', 'guid'], name='feed_guid')
+        ]
 
     def __str__(self):
         return self.title
@@ -108,6 +112,8 @@ class Article(models.Model):
     # override model save method
     def save(self, *args, **kwargs):
         self.updated_at = get_now()
+        if not self.guid:
+            self.guid = self.link
         super().save(*args, **kwargs)
 
     def mark_read(self):

@@ -44,7 +44,7 @@ atom_feed = """
               type="video/mpeg4"
               href="http://www.example.com/movie.mp4"
               length="42301"/>
-        <id>tag:feedparser.org,2005-11-09:/docs/examples/atom10.xml:3</id>
+        <id>entry/3</id>
         <published>2005-11-09T00:23:47Z</published>
         <updated>2005-11-09T11:56:34Z</updated>
         <summary type="text/plain" mode="escaped">Watch out for nasty tricks</summary>
@@ -73,13 +73,13 @@ rss_feed = """
         <!-- other elements omitted from this example -->
         <item>
             <title>First rss entry title</title>
-            <link>http://example.org/entry/3</link>
+            <link>http://example.org/entry/{guid}</link>
             <description>Watch out for &lt;span style="background-image:
                 url(javascript:window.location='http://example.org/')"&gt;nasty
                 tricks&lt;/span&gt;
             </description>
             <pubDate>Thu, 05 Sep 2002 00:00:01 GMT</pubDate>
-            <guid>http://example.org/entry/3</guid>
+            <guid>{guid}</guid>
             <!-- other elements omitted from this example -->
         </item>
     </channel>
@@ -100,12 +100,14 @@ def test_import_atom(make_feed):
     assert len(articles) == 1
 
     assert articles[0].title == "First atom entry title"
+    assert articles[0].link == "http://example.org/entry/3"
+    assert articles[0].guid == "http://example.org/entry/3"
 
 
 @pytest.mark.django_db
 def test_import_rss(make_feed):
     feed = make_feed()
-    feed.external_uid = rss_feed
+    feed.external_uid = rss_feed.format(guid='12345')
     feed.save()
 
     do_rss_import()
@@ -113,6 +115,8 @@ def test_import_rss(make_feed):
     assert len(articles) == 1
 
     assert articles[0].title == "First rss entry title"
+    assert articles[0].link == "http://example.org/entry/12345"
+    assert articles[0].guid == "12345"
     assert articles[0].published_at == datetime.datetime(
         2002, 9, 5, 0, 0, 1, tzinfo=datetime.timezone.utc
     )
@@ -121,7 +125,10 @@ def test_import_rss(make_feed):
 @pytest.mark.django_db
 def test_import_only_once(make_feed):
     feed = make_feed()
-    feed.external_uid = rss_feed
+    feed.external_uid = rss_feed.format(guid='12345')
+    feed.save()
+
+    feed.external_uid = rss_feed.format(guid='12345')
     feed.save()
 
     do_rss_import()
@@ -131,6 +138,13 @@ def test_import_only_once(make_feed):
     do_rss_import()
     articles = Article.objects.all()
     assert len(articles) == 1
+
+    feed.external_uid = rss_feed.format(guid='54321')
+    feed.save()
+
+    do_rss_import()
+    articles = Article.objects.all()
+    assert len(articles) == 2
 
 
 @pytest.mark.django_db

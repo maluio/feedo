@@ -4,7 +4,7 @@ from diagrams.programming.framework import Django
 from diagrams.aws.storage import S3
 from diagrams.onprem.network import Traefik, Gunicorn, Caddy
 from diagrams.generic.database import SQL
-from diagrams.generic.device import Mobile
+from diagrams.onprem.client import User
 
 # https://www.graphviz.org/doc/info/attrs.html
 graph_attr = {
@@ -14,7 +14,7 @@ graph_attr = {
 # https://diagrams.mingrammer.com/docs/getting-started/installation
 with Diagram("Feedo - Recommended Architecture", filename="docs/feedo-architecture", graph_attr=graph_attr):
     with Cluster("Public Internet"):
-        user = Mobile("User")
+        user = User("User")
 
     with Cluster("On Prem"):
         with Cluster("Routing + Access Control"):
@@ -35,7 +35,7 @@ with Diagram("Feedo - Recommended Architecture", filename="docs/feedo-architectu
 
 with Diagram("Feedo - Simple Architecture", filename="docs/feedo-architecture-simple", graph_attr=graph_attr):
     with Cluster("Public Internet"):
-        user = Mobile("User")
+        user = User("User")
 
     with Cluster("On Prem"):
         with Cluster("Routing + Access Control"):

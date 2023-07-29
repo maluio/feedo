@@ -64,12 +64,21 @@ def test_articles_by_feed(client, make_feed, make_article):
         assert r.status_code == 302
         assert r.url == "/"
 
-        make_article(feed=feed1)
+        article1 = make_article(feed=feed1)
+        article1.created_at = datetime.datetime(2000, 5, 10, 9, 0, tzinfo=datetime.timezone.utc)
+        article1.save()
+
+        article2 = make_article(title="article2", link="https://example.com/article/2", feed=feed1)
+        article2.created_at = datetime.datetime(2000, 5, 10, 8, 0, tzinfo=datetime.timezone.utc)
+        article2.save()
 
         r = client.get(f"/feeds/{feed1.id}/articles/", follow=False)
         assert r.status_code == 200
-        assert len(r.context["articles"]) == 1
-        assert r.context["last_created_at"] == '2000-05-10T00%3A00%3A00%2B00%3A00'
+        assert len(r.context["articles"]) == 2
+        assert r.context["last_created_at"] == '2000-05-10T09%3A00%3A00%2B00%3A00'
+
+        assert r.context["articles"][0].title == "article2"
+        assert r.context["articles"][1].title == "article1"
 
 
 @pytest.mark.django_db
